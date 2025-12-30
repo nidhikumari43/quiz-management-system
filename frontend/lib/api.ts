@@ -1,9 +1,6 @@
 import axios from 'axios';
 
-// API base URL - can be overridden with NEXT_PUBLIC_API_URL environment variable
-const API_BASE_URL = typeof window !== 'undefined' 
-  ? (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api')
-  : 'http://localhost:8000/api';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -70,7 +67,8 @@ export interface SubmissionAnswer {
 export const adminApi = {
   getQuizzes: async (): Promise<Quiz[]> => {
     const response = await api.get('/admin/quizzes/');
-    return response.data;
+    // Handle paginated response
+    return response.data.results || response.data;
   },
 
   getQuiz: async (id: string): Promise<Quiz> => {

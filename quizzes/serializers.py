@@ -83,13 +83,16 @@ class QuizSerializer(serializers.ModelSerializer):
 
 
 class QuizCreateSerializer(serializers.ModelSerializer):
+    slug = serializers.SlugField(required=False, allow_blank=True)
+    
     class Meta:
         model = Quiz
         fields = ['id', 'title', 'slug', 'description', 'is_active']
 
     def create(self, validated_data):
+        # Remove slug if empty, let model handle auto-generation
         if not validated_data.get('slug'):
-            validated_data['slug'] = slugify(validated_data['title'])
+            validated_data.pop('slug', None)
         return super().create(validated_data)
 
 

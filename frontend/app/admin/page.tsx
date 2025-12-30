@@ -19,10 +19,12 @@ export default function AdminPage() {
     try {
       setLoading(true);
       const data = await adminApi.getQuizzes();
-      setQuizzes(data);
+      // Ensure data is an array
+      setQuizzes(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error loading quizzes:', error);
       alert('Error loading quizzes');
+      setQuizzes([]); // Set empty array on error
     } finally {
       setLoading(false);
     }

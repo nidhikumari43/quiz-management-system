@@ -24,9 +24,14 @@ export default function TakeQuizPage() {
       setLoading(true);
       const data = await publicApi.getQuiz(slug);
       setQuiz(data);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error loading quiz:', error);
-      alert('Error loading quiz. Please check the quiz URL.');
+      // Check if it's a 404 error (quiz not found)
+      if (error?.response?.status === 404) {
+        setQuiz(null); // Set to null to show "not found" message
+      } else {
+        alert('Error loading quiz. Please check the quiz URL.');
+      }
     } finally {
       setLoading(false);
     }
