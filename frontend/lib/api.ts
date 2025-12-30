@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
+// API base URL - can be overridden with NEXT_PUBLIC_API_URL environment variable
+const API_BASE_URL = typeof window !== 'undefined' 
+  ? (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api')
+  : 'http://localhost:8000/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
